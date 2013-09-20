@@ -120,8 +120,16 @@ public class MainActivity extends Activity {
                 }
                 return true;
             case R.id.action_facebook:
-                Intent facebookIntent = new Intent(this, FacebookActivity.class);
-                startActivity(facebookIntent);
+                Intent facebook = new Intent(this, FacebookActivity.class);
+                startActivity(facebook);
+                return true;
+            case R.id.action_settings:
+                Intent settings = new Intent(this, SettingsActivity.class);
+                startActivity(settings);
+                return true;
+            case R.id.action_about:
+                Intent about = new Intent(this, AboutActivity.class);
+                startActivity(about);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
