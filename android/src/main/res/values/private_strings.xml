@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Delmario</string>
+    <string name="market_uri">market://details?id=io.delmar.delmario.android</string>
+    <string name="github_issues_url">https://github.com/delmar/delmario/issues</string>
+    <string name="github_url">https://github.com/delmar/delmario</string>
+    <string name="googleplus_url">https://plus.google.com/100273499635207726427</string>
+    <string name="twitter_url">https://twitter.com/Delmarcargo</string>
+    <string name="facebook_url">https://www.facebook.com/Delmarcargo</string>
+    <string name="youtube_url">http://www.youtube.com/Delmarcargo</string>
+    <string name="backup_api_key">backup_api_key</string>
+</resources>
