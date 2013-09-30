@@ -1,32 +1,25 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:delmario="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_websearch"
-        android:icon="@drawable/action_search"
+        android:icon="@drawable/ic_action_search"
         android:title="@string/action_websearch"
-        android:showAsAction="ifRoom|withText"
-        />
+        delmario:showAsAction="ifRoom"/>
     <item
-        android:id="@+id/itemMainmenuRefresh"
-        android:icon="@drawable/ic_refresh"
-        android:showAsAction="always"
-        android:title="@string/refresh">
-    </item>
-    <item
-        android:id="@+id/action_facebook"
-        android:icon="@drawable/ic_social_facebook"
-        android:title="facebook"
-        android:showAsAction="ifRoom"
-        />
+        android:id="@+id/action_refresh"
+        android:icon="@drawable/ic_action_refresh"
+        android:title="@string/refresh"
+        delmario:showAsAction="ifRoom"/>
     <item
         android:id="@+id/action_settings"
-        android:icon="@drawable/ic_settings"
         android:title="@string/action_settings"
-        android:showAsAction="ifRoom"
-        />
+        delmario:showAsAction="never"/>
+    <item
+        android:id="@+id/action_facebook"
+        android:title="@string/action_facebook"
+        delmario:showAsAction="never"/>
     <item
         android:id="@+id/action_about"
-        android:icon="@drawable/ic_about"
         android:title="@string/action_about"
-        android:showAsAction="ifRoom"
-        />
+        delmario:showAsAction="never"/>
 </menu>

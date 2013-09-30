@@ -1,2 +1,3 @@
 include ':spring-rest-api'
 include ':android'
+include ':abs'
