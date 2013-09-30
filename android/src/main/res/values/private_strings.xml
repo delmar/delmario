@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Delmario</string>
     <string name="market_uri">market://details?id=io.delmar.delmario.android</string>
     <string name="github_issues_url">https://github.com/delmar/delmario/issues</string>
     <string name="github_url">https://github.com/delmar/delmario</string>

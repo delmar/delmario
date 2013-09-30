@@ -1,4 +1,4 @@
-package io.delmar.abs;
+package io.delmar;
 
 import com.actionbarsherlock.app.SherlockActivity;
 
