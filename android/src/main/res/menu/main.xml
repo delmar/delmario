@@ -1,25 +1,34 @@
-<menu xmlns:delmario="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:delmario="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_websearch"
         android:icon="@drawable/ic_action_search"
         android:title="@string/action_websearch"
+        android:orderInCategory="1"
         delmario:showAsAction="ifRoom"/>
+<!--
     <item
         android:id="@+id/action_refresh"
         android:icon="@drawable/ic_action_refresh"
         android:title="@string/refresh"
         delmario:showAsAction="ifRoom"/>
+-->
     <item
         android:id="@+id/action_settings"
+        android:icon="@drawable/ic_action_settings"
         android:title="@string/action_settings"
-        delmario:showAsAction="never"/>
-    <item
-        android:id="@+id/action_facebook"
-        android:title="@string/action_facebook"
-        delmario:showAsAction="never"/>
+        android:orderInCategory="10"
+        delmario:showAsAction="ifRoom"/>
     <item
         android:id="@+id/action_about"
+        android:icon="@drawable/ic_action_about"
         android:title="@string/action_about"
-        delmario:showAsAction="never"/>
+        android:orderInCategory="30"
+        delmario:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/action_facebook"
+        android:icon="@drawable/icon_social_facebook"
+        android:title="@string/action_facebook"
+        android:orderInCategory="40"
+        delmario:showAsAction="ifRoom"/>
 </menu>
