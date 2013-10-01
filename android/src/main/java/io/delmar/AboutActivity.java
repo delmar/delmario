@@ -9,7 +9,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 
 public class AboutActivity extends ActionBarActivity implements ActionBar.TabListener{
     private static final String BUNDLE_KEY_TABINDEX = "tabindex";
@@ -17,9 +16,6 @@ public class AboutActivity extends ActionBarActivity implements ActionBar.TabLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Needs to be called before setting the content view
-        supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
-        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setContentView(R.layout.about_navigation);
