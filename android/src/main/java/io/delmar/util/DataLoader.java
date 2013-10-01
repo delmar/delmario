@@ -1,4 +1,3 @@
-
 package io.delmar.util;
 
 import android.content.Context;

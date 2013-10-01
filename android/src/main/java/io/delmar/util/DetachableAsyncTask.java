@@ -2,7 +2,6 @@ package io.delmar.util;
 
 import android.os.AsyncTask;
 
-
 public abstract class DetachableAsyncTask<Params, Progress, Result, Parent> extends
         AsyncTask<Params, Progress, Result> {
 
