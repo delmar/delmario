@@ -21,4 +21,8 @@
     android:gravity="center_vertical"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:textColor="#fff"/>
+    android:textAppearance="?attr/textAppearanceListItemSmall"
+    android:background="?attr/listChoiceBackgroundIndicator"
+    android:minHeight="?attr/listPreferredItemHeightSmall"
+    android:textColor="#fff"
+    />
