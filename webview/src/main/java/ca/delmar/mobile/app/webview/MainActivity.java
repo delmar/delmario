@@ -1,48 +1,59 @@
-package io.delmar;
-
-import java.util.Locale;
+package ca.delmar.mobile.app.webview;
 
 import android.app.SearchManager;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-/**
- *
- */
-public class MainActivity extends ActionBarActivity {
+import ca.delmar.mobile.app.webview.util.HelpUtils;
+
+public class MainActivity extends BaseActivity {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
+    public static final String DELMAR_MOBILE_URL = "https://www.delmarcargo.com/mobile";
+
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
 
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
-    private String[] mPlanetTitles;
+    private String[] mMobileTitles;
+
+    // private WebView mWebView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if (!isConnected()) {
+            Toast.makeText(this, "No Network Available!", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+
         mTitle = mDrawerTitle = getTitle();
-        mPlanetTitles = getResources().getStringArray(R.array.planets_array);
+        mMobileTitles = getResources().getStringArray(R.array.mobile_titles);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
@@ -50,12 +61,12 @@ public class MainActivity extends ActionBarActivity {
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         // set up the drawer's list view with items and click listener
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, mPlanetTitles));
+                R.layout.drawer_list_item, mMobileTitles));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         // enable ActionBar app icon to behave as action to toggle nav drawer
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        // getActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the sliding drawer and the action bar app icon
@@ -78,9 +89,16 @@ public class MainActivity extends ActionBarActivity {
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
+/*
+        mWebView = (WebView) findViewById(R.id.webview);
+        mWebView.setWebViewClient(new DelmarWebViewClient());
+        mWebView.getSettings().setJavaScriptEnabled(true);
+*/
+
         if (savedInstanceState == null) {
             selectItem(0);
         }
+
     }
 
     @Override
@@ -111,7 +129,7 @@ public class MainActivity extends ActionBarActivity {
             case R.id.action_websearch:
                 // create intent to perform web search for this planet
                 Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-                intent.putExtra(SearchManager.QUERY, getSupportActionBar().getTitle());
+                intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
                 // catch event that there's no activity to handle intent
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
@@ -119,24 +137,15 @@ public class MainActivity extends ActionBarActivity {
                     Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show();
                 }
                 return true;
-            case R.id.action_facebook:
-                Intent facebook = new Intent(this, FacebookActivity.class);
-                startActivity(facebook);
-                return true;
-            case R.id.action_settings:
-                Intent settings = new Intent(this, SettingsActivity.class);
-                startActivity(settings);
-                return true;
-            case R.id.action_about:
-                Intent about = new Intent(this, AboutActivity.class);
-                startActivity(about);
+            case R.id.menu_about:
+                HelpUtils.showAbout(this);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    /* The click listener for ListView in the navigation drawer */
+    /* The click listner for ListView in the navigation drawer */
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -145,25 +154,27 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void selectItem(int position) {
-        // update the main content by replacing fragments
-        Fragment fragment = new PlanetFragment();
+        Fragment fragment = new MyWebViewFragment();
         Bundle args = new Bundle();
-        args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
+        args.putInt(MyWebViewFragment.ARG_WEBVIEW_NUMBER, position);
         fragment.setArguments(args);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
-        // update selected item and title, then close the drawer
+/*
+        String resource_url = getResources().getStringArray(R.array.mobile_urls)[position];
+        mWebView.loadUrl(DELMAR_MOBILE_URL + resource_url);
         mDrawerList.setItemChecked(position, true);
-        setTitle(mPlanetTitles[position]);
+        setTitle(mMobileTitles[position]);
+*/
         mDrawerLayout.closeDrawer(mDrawerList);
     }
 
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;
-        getSupportActionBar().setTitle(mTitle);
+        getActionBar().setTitle(mTitle);
     }
 
     /**
@@ -186,47 +197,125 @@ public class MainActivity extends ActionBarActivity {
     }
 
     /**
-     * Fragment that appears in the "content_frame", shows a planet
+     * Fragment that appears in the "content_frame", shows a webview
      */
-    public static class PlanetFragment extends Fragment {
-        public static final String ARG_PLANET_NUMBER = "planet_number";
-
-        public PlanetFragment() {
+    public static class MyWebViewFragment extends Fragment {
+        public static final String ARG_WEBVIEW_NUMBER = "webview_number";
+        private WebView webview;
+        public MyWebViewFragment() {
             // Empty constructor required for fragment subclasses
         }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_planet, container, false);
-            int i = getArguments().getInt(ARG_PLANET_NUMBER);
-            String planet = getResources().getStringArray(R.array.planets_array)[i];
+            View rootView = inflater.inflate(R.layout.fragment_webview, container, false);
+            int i = getArguments().getInt(ARG_WEBVIEW_NUMBER);
+            String resource_name = getResources().getStringArray(R.array.mobile_titles)[i];
+            String resource_url = getResources().getStringArray(R.array.mobile_urls)[i];
 
-            int imageId = getResources().getIdentifier(planet.toLowerCase(Locale.getDefault()),
-                    "drawable", getActivity().getPackageName());
-            ((ImageView) rootView.findViewById(R.id.image)).setImageResource(imageId);
-            getActivity().setTitle(planet);
+            webview = (WebView) rootView.findViewById(R.id.webview);
+            webview.getSettings().setJavaScriptEnabled(true);
+            webview.setWebViewClient(new WebViewClient() {
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    if (Uri.parse(url).getHost().equals("www.delmarcargo.com")) {
+                        // This is my web site, so do not override; let my WebView load the page
+                        return false;
+                    }
+                    // Otherwise, the link is not for a page on my site, so launch another Activity that handles URLs
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(intent);
+                    return true;
+                }
+
+                public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                    Toast.makeText(view.getContext(), "Oh no! " + description, Toast.LENGTH_SHORT).show();
+                }
+            });
+            getActivity().setTitle(resource_name);
+            webview.loadUrl(DELMAR_MOBILE_URL + resource_url);
             return rootView;
-        }
-    }
-
-    public static class ContentFragment extends Fragment {
-        public static final String ARG_JSON_URL = "JSON_URL";
-
-        public ContentFragment() {
-
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_json, container, false);
-            int i = getArguments().getInt(ARG_JSON_URL);
-            String jsonUrl = getResources().getStringArray(R.array.jsons_array)[i];
-            // todo: async call to show the content
-            // getActivity().setTitle("Delmar");
-            return rootView;
+        public void onPause() {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                webview.onPause();
+            } else {
+                webview.pauseTimers();
+            }
+            super.onPause();
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                webview.onResume();
+            } else {
+                webview.resumeTimers();
+            }
         }
 
     }
+
+    public boolean isConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting();
+    }
+
+/*
+    @Override
+    public void onPause() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            mWebView.onPause();
+        } else {
+            mWebView.pauseTimers();
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            mWebView.onResume();
+        } else {
+            mWebView.resumeTimers();
+        }
+    }
+*/
+
+/*
+    @Override
+    protected void onRestoreInstanceState(Bundle inState) {
+        super.onRestoreInstanceState(inState);
+        mWebView.restoreState(inState);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mWebView.saveState(outState);
+    }
+*/
+
+
+    private class DelmarWebViewClient extends WebViewClient {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+            if (Uri.parse(url).getHost().equals("www.delmarcargo.com")) {
+                // This is my web site, so do not override; let my WebView load the page
+                return false;
+            }
+            // Otherwise, the link is not for a page on my site, so launch another Activity that handles URLs
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(intent);
+            return true;
+        }
+
+    }
+
 }
