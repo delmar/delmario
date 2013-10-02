@@ -16,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 /**
  * Created by jinw on 19/09/13.
  */
-public class FacebookActivity extends Activity {
+public class FacebookActivity extends BaseActivity {
 
     public static final String DELMAR_FACEBOOK_GRAPH = "http://graph.facebook.com/delmarcargo";
     private Page page;

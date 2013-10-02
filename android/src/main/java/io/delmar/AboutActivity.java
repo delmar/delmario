@@ -10,7 +10,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
-public class AboutActivity extends ActionBarActivity implements ActionBar.TabListener{
+public class AboutActivity extends BaseActivity implements ActionBar.TabListener{
     private static final String BUNDLE_KEY_TABINDEX = "tabindex";
 
     @Override
