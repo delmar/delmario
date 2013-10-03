@@ -44,7 +44,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         if (!isConnected()) {
-            Toast.makeText(this, "No Network Available!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.network_not_available, Toast.LENGTH_SHORT).show();
             finish();
         }
 
