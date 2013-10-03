@@ -8,16 +8,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
@@ -40,7 +36,7 @@ public class MainActivity extends BaseActivity {
     private CharSequence mTitle;
     private String[] mMobileTitles;
 
-    // private WebView mWebView;
+    private WebView mWebView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,11 +85,9 @@ public class MainActivity extends BaseActivity {
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-/*
-        mWebView = (WebView) findViewById(R.id.webview);
+        mWebView = (WebView) findViewById(R.id.webView);
         mWebView.setWebViewClient(new DelmarWebViewClient());
         mWebView.getSettings().setJavaScriptEnabled(true);
-*/
 
         if (savedInstanceState == null) {
             selectItem(0);
@@ -126,6 +120,9 @@ public class MainActivity extends BaseActivity {
         }
         // Handle action buttons
         switch(item.getItemId()) {
+            case R.id.action_refresh:
+                mWebView.loadUrl("javascript:window.location.reload( true )");
+                return true;
             case R.id.action_websearch:
                 // create intent to perform web search for this planet
                 Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
@@ -145,7 +142,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    /* The click listner for ListView in the navigation drawer */
+    /* The click listener for ListView in the navigation drawer */
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -154,6 +151,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void selectItem(int position) {
+/*
         Fragment fragment = new MyWebViewFragment();
         Bundle args = new Bundle();
         args.putInt(MyWebViewFragment.ARG_WEBVIEW_NUMBER, position);
@@ -161,13 +159,13 @@ public class MainActivity extends BaseActivity {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+*/
 
-/*
         String resource_url = getResources().getStringArray(R.array.mobile_urls)[position];
         mWebView.loadUrl(DELMAR_MOBILE_URL + resource_url);
         mDrawerList.setItemChecked(position, true);
         setTitle(mMobileTitles[position]);
-*/
+
         mDrawerLayout.closeDrawer(mDrawerList);
     }
 
@@ -199,6 +197,7 @@ public class MainActivity extends BaseActivity {
     /**
      * Fragment that appears in the "content_frame", shows a webview
      */
+/*
     public static class MyWebViewFragment extends Fragment {
         public static final String ARG_WEBVIEW_NUMBER = "webview_number";
         private WebView webview;
@@ -259,13 +258,22 @@ public class MainActivity extends BaseActivity {
         }
 
     }
+*/
+
+    @Override
+    public void onBackPressed() {
+        if (mWebView.canGoBack()) {
+            mWebView.goBack();
+            return;
+        }
+        super.onBackPressed();
+    }
 
     public boolean isConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting();
     }
 
-/*
     @Override
     public void onPause() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -285,9 +293,7 @@ public class MainActivity extends BaseActivity {
             mWebView.resumeTimers();
         }
     }
-*/
 
-/*
     @Override
     protected void onRestoreInstanceState(Bundle inState) {
         super.onRestoreInstanceState(inState);
@@ -299,8 +305,6 @@ public class MainActivity extends BaseActivity {
         super.onSaveInstanceState(outState);
         mWebView.saveState(outState);
     }
-*/
-
 
     private class DelmarWebViewClient extends WebViewClient {
         @Override
@@ -315,7 +319,6 @@ public class MainActivity extends BaseActivity {
             startActivity(intent);
             return true;
         }
-
     }
 
 }
