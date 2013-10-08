@@ -16,7 +16,7 @@ import java.io.InputStreamReader;
 public final class DataLoader {
 	/** Private constructor. */
 	private DataLoader() {
-	};
+	}
 
 	/**
 	 * reads the changelog file and returns its content as a String.

@@ -8,4 +8,6 @@ public class Config {
     // TODO: Add your Google API key here.
     public static final String API_KEY = "YOUR_API_KEY_HERE";
 
+    public static final int CONFERENCE_YEAR = 2013;
+
 }

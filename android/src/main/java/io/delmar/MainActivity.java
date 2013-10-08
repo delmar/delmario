@@ -118,6 +118,14 @@ public class MainActivity extends BaseActivity {
                     Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show();
                 }
                 return true;
+            case R.id.action_news:
+                Intent news = new Intent(this, NewsActivity.class);
+                startActivity(news);
+                return true;
+            case R.id.action_dummy:
+                Intent dummy = new Intent(this, ItemListActivity.class);
+                startActivity(dummy);
+                return true;
             case R.id.action_facebook:
                 Intent facebook = new Intent(this, FacebookActivity.class);
                 startActivity(facebook);

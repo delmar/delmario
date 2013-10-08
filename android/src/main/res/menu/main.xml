@@ -6,18 +6,29 @@
         android:title="@string/action_websearch"
         android:orderInCategory="1"
         delmario:showAsAction="ifRoom"/>
-<!--
     <item
         android:id="@+id/action_refresh"
         android:icon="@drawable/ic_action_refresh"
         android:title="@string/refresh"
+        android:orderInCategory="5"
         delmario:showAsAction="ifRoom"/>
--->
+    <item
+        android:id="@+id/action_news"
+        android:icon="@drawable/ic_action_help"
+        android:title="@string/action_news"
+        android:orderInCategory="10"
+        delmario:showAsAction="never"/>
+    <item
+        android:id="@+id/action_dummy"
+        android:icon="@drawable/ic_action_help"
+        android:title="@string/action_dummy"
+        android:orderInCategory="15"
+        delmario:showAsAction="never"/>
     <item
         android:id="@+id/action_settings"
         android:icon="@drawable/ic_action_settings"
         android:title="@string/action_settings"
-        android:orderInCategory="10"
+        android:orderInCategory="20"
         delmario:showAsAction="never"/>
     <item
         android:id="@+id/action_about"

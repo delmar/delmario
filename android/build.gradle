@@ -4,10 +4,6 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:0.5.+'
-/*
-        classpath 'com.googlecode.androidannotations:androidannotations:2.7.1'
-        classpath 'com.googlecode.androidannotations:androidannotations-api:2.7.1'
-*/
     }
 }
 apply plugin: 'android'
@@ -42,4 +38,6 @@ dependencies {
 
     compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.2.2'
+
+    compile fileTree(dir: 'libs', include: 'volley.jar')
 }

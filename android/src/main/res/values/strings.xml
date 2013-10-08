@@ -29,6 +29,9 @@
     <string name="action_websearch">Web search</string>
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
     <string name="refresh">Refresh</string>
+    <string name="action_news">News</string>
+    <string name="action_dummy">Dummy</string>
+    <string name="title_activity_news">News</string>
     <string name="action_facebook">facebook</string>
     <string name="action_settings">Settings</string>
     <string name="action_about">About</string>
@@ -36,5 +39,7 @@
     <string name="about_delmar_title">About Delmar!</string>
     <string name="about_text">Delmar is open source, please feel free to contribute via GitHub. This app is not associated with Google in any way.\n\nVisit us on:</string>
     <string name="about_location_title">Location</string>
+    <string name="title_item_list">Items</string>
+    <string name="title_item_detail">Item Detail</string>
 
 </resources>
