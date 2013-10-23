@@ -13,6 +13,7 @@ import java.util.Date;
 public class Notice implements Serializable {
     public String id;
     public String title;
+    public String description;
     public Date date;
-    // public String html;
+    public String html;
 }

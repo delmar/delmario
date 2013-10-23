@@ -1,6 +1,8 @@
 package ca.delmar.api.controller;
 
 import ca.delmar.api.domain.Notice;
+import ca.delmar.api.domain.Notices;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -40,14 +42,23 @@ public class NoticeController {
         this.lobHandler = lobHandler;
     }
 
-    @RequestMapping(value = "/list")
+    @RequestMapping(value = "/notices")
     @ResponseBody
-    public List<Notice> getJsonList(@RequestParam(value = "lang",  required = false, defaultValue = "en") String language,
-                                    @RequestParam(value = "count", required = false, defaultValue = "20") int count) {
-        return getList(language, count);
+    public Notices getNotices(@RequestParam(value = "lang",  required = false, defaultValue = "en") String language,
+                              @RequestParam(value = "count", required = false, defaultValue = "20") int count) {
+        Notices result = new Notices();
+        result.setNotices(findList(language, count));
+        return result;
     }
 
-    private List<Notice> getList(String language, int count) {
+    @RequestMapping(value = "/list")
+    @ResponseBody
+    public List<Notice> getList(@RequestParam(value = "lang",  required = false, defaultValue = "en") String language,
+                                @RequestParam(value = "count", required = false, defaultValue = "20") int count) {
+        return findList(language, count);
+    }
+
+    private List<Notice> findList(String language, int count) {
         int languageId = language.equalsIgnoreCase("en") ? 1 : 2;
         jdbcTemplate.setMaxRows(count);
         String query = "SELECT n.*   FROM TBLNOTICE n   WHERE n.LANGUAGEID = :languageId AND n.ISACTIVE       = 1 AND n.ISTEMPLATE     = 0 AND n.NOTICEPRIVATE  = 0 AND n.NOTICEDRAFT    = 0 AND n.DATESENT      IS NOT NULL ORDER BY n.DATESENT DESC";
@@ -61,8 +72,9 @@ public class NoticeController {
             Notice result = new Notice();
             result.id = rs.getString("noticeid");
             result.title = rs.getString("noticesubject");
+            result.description = rs.getString("noticesubject");
             result.date = rs.getDate("DATESENT");
-            // result.html = lobHandler.getClobAsString(rs, "noticehtml");
+            result.html = lobHandler.getClobAsString(rs, "noticehtml");
             return result;
         }
     }

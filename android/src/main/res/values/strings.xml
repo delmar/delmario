@@ -30,7 +30,8 @@
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
     <string name="refresh">Refresh</string>
     <string name="action_news">News</string>
-    <string name="action_dummy">Dummy</string>
+    <string name="action_location">Location</string>
+    <string name="title_activity_location">Location</string>
     <string name="title_activity_news">News</string>
     <string name="action_facebook">facebook</string>
     <string name="action_settings">Settings</string>
@@ -41,5 +42,5 @@
     <string name="about_location_title">Location</string>
     <string name="title_item_list">Items</string>
     <string name="title_item_detail">Item Detail</string>
-
+    <string name="location_authority">io.delmar.provider.location</string>
 </resources>

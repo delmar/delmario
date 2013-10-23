@@ -23,12 +23,13 @@ import java.util.ArrayList;
 /**
  * Created by jinw on 04/10/13.
  */
-public class NewsActivity extends BaseActivity {
+public class NoticeListVolleyActivity extends BaseActivity {
 
+    public static final String JSON_URL = "http://www.delmarcargo.com/api/notices/list.json";
     private String TAG = this.getClass().getSimpleName();
     private ListView lstView;
     private RequestQueue mRequestQueue;
-    private ArrayList<NewsModel> arrNews;
+    private ArrayList<NoticeModel> arrNotices;
     private LayoutInflater lf;
     private VolleyAdapter va;
 
@@ -38,15 +39,14 @@ public class NewsActivity extends BaseActivity {
         setContentView(R.layout.activity_news);
         lf = LayoutInflater.from(this);
 
-        arrNews = new ArrayList<NewsModel>();
+        arrNotices = new ArrayList<NoticeModel>();
         va = new VolleyAdapter();
 
         lstView = (ListView) findViewById(R.id.listView);
         lstView.setAdapter(va);
         mRequestQueue = Volley.newRequestQueue(this);
-        String url = "http://www.delmarcargo.com/api/notices/list.json";
 
-        JsonArrayRequest jr = new JsonArrayRequest(url,
+        JsonArrayRequest jr = new JsonArrayRequest(JSON_URL,
             new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
@@ -73,20 +73,19 @@ public class NewsActivity extends BaseActivity {
             // JSONArray items = value.getJSONArray("items");
             for (int i = 0; i < items.length(); i++) {
                 JSONObject item = items.getJSONObject(i);
-                NewsModel nm = new NewsModel();
+                NoticeModel nm = new NoticeModel();
                 nm.setTitle(item.optString("title"));
-                nm.setDescription(item.optString("title"));
+                // nm.setDescription(item.optString("title"));
                 nm.setLink(item.optString("id"));
                 nm.setPubDate(item.optString("date"));
-                arrNews.add(nm);
+                arrNotices.add(nm);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-
-    class NewsModel {
+    class NoticeModel {
         private int id;
         private String title;
         private String link;
@@ -140,12 +139,12 @@ public class NewsActivity extends BaseActivity {
 
         @Override
         public int getCount() {
-            return arrNews.size();
+            return arrNotices.size();
         }
 
         @Override
         public Object getItem(int i) {
-            return arrNews.get(i);
+            return arrNotices.get(i);
         }
 
         @Override
@@ -158,30 +157,27 @@ public class NewsActivity extends BaseActivity {
             ViewHolder vh;
             if (view == null) {
                 vh = new ViewHolder();
-                view = lf.inflate(R.layout.news_list_item, null);
+                view = lf.inflate(R.layout.notice_list_item, null);
                 vh.tvTitle = (TextView) view.findViewById(R.id.txtTitle);
-                vh.tvDesc = (TextView) view.findViewById(R.id.txtDesc);
+                // vh.tvDesc = (TextView) view.findViewById(R.id.txtDesc);
                 vh.tvDate = (TextView) view.findViewById(R.id.txtDate);
                 view.setTag(vh);
             } else {
                 vh = (ViewHolder) view.getTag();
             }
 
-            NewsModel nm = arrNews.get(i);
+            NoticeModel nm = arrNotices.get(i);
             vh.tvTitle.setText(nm.getTitle());
-            vh.tvDesc.setText(nm.getDescription());
+            // vh.tvDesc.setText(nm.getDescription());
             vh.tvDate.setText(nm.getPubDate());
             return view;
         }
 
         class ViewHolder {
             TextView tvTitle;
-            TextView tvDesc;
+            // TextView tvDesc;
             TextView tvDate;
-
         }
 
     }
 }
-
-
