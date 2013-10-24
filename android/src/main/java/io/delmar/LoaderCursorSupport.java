@@ -90,7 +90,7 @@ public class LoaderCursorSupport extends ActionBarActivity {
             MenuItem item = menu.add("Search");
             item.setIcon(R.drawable.ic_action_search);
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-            View searchView = SearchViewCompat.newSearchView(this.getActivity());
+            View searchView = SearchViewCompat.newSearchView(getActivity());
             if (searchView != null) {
                 SearchViewCompat.setOnQueryTextListener(searchView,
                         new OnQueryTextListenerCompat() {
