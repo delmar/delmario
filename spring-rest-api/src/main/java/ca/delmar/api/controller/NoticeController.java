@@ -9,14 +9,17 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.lob.LobHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.io.IOException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -58,13 +61,35 @@ public class NoticeController {
         return findList(language, count);
     }
 
+    @RequestMapping(value = "{id}")
+    @ResponseBody
+    public Notice getNotice(@PathVariable(value = "id") String noticeId) {
+        return find(Long.parseLong(noticeId));
+    }
+
+    @RequestMapping(value = "{id}.html")
+    @ResponseBody
+    public void getNotice(@PathVariable(value = "id") String noticeId, HttpServletResponse response) throws IOException {
+        Notice notice = find(Long.parseLong(noticeId));
+        response.setHeader("Cache-Control","max-age=864000");
+        response.setContentType("text/html");
+        response.getOutputStream().print(notice.html);
+    }
+
+    // -----------------------------------------------------------------
+    // private database query, should be from repository instead of here.
     private List<Notice> findList(String language, int count) {
         int languageId = language.equalsIgnoreCase("en") ? 1 : 2;
         jdbcTemplate.setMaxRows(count);
         String query = "SELECT n.*   FROM TBLNOTICE n   WHERE n.LANGUAGEID = :languageId AND n.ISACTIVE       = 1 AND n.ISTEMPLATE     = 0 AND n.NOTICEPRIVATE  = 0 AND n.NOTICEDRAFT    = 0 AND n.DATESENT      IS NOT NULL ORDER BY n.DATESENT DESC";
-        List<Notice> list = jdbcTemplate.query(query, new Object[]{languageId}, new NoticeMapper());
+        List<Notice> list = jdbcTemplate.query(query, new Object[]{languageId}, new NoticeListMapper());
         jdbcTemplate.setMaxRows(0);
         return list;
+    }
+
+    private Notice find(Long noticeId) {
+        String sql = "select n.* from tblnotice n where n.noticeid = :noticeId";
+        return jdbcTemplate.queryForObject(sql, new Object[]{noticeId}, new NoticeMapper());
     }
 
     private final class NoticeMapper implements RowMapper<Notice> {
@@ -75,6 +100,18 @@ public class NoticeController {
             result.description = rs.getString("noticesubject");
             result.date = rs.getDate("DATESENT");
             result.html = lobHandler.getClobAsString(rs, "noticehtml");
+            return result;
+        }
+    }
+
+    private final class NoticeListMapper implements RowMapper<Notice> {
+        public Notice mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Notice result = new Notice();
+            result.id = rs.getString("noticeid");
+            result.title = rs.getString("noticesubject");
+            result.description = rs.getString("noticesubject");
+            result.date = rs.getDate("DATESENT");
+            // result.html = lobHandler.getClobAsString(rs, "noticehtml");
             return result;
         }
     }

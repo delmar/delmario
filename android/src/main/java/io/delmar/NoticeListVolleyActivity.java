@@ -1,10 +1,13 @@
 package io.delmar;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,7 +28,10 @@ import java.util.ArrayList;
  */
 public class NoticeListVolleyActivity extends BaseActivity {
 
-    public static final String JSON_URL = "http://www.delmarcargo.com/api/notices/list.json";
+    public static final String DELMAR_API_URL = "http://www.delmarcargo.com/api";
+    public static final String NOTICE_LIST_URL = DELMAR_API_URL + "/notices/list.json";
+    public static final String NOTICE_HTML_URL = "/notices/";
+
     private String TAG = this.getClass().getSimpleName();
     private ListView lstView;
     private RequestQueue mRequestQueue;
@@ -44,9 +50,18 @@ public class NoticeListVolleyActivity extends BaseActivity {
 
         lstView = (ListView) findViewById(R.id.listView);
         lstView.setAdapter(va);
+        lstView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                NoticeModel notice = (NoticeModel) va.getItem(position);
+                Uri uri = Uri.parse(NOTICE_HTML_URL + notice.getId() + ".html");
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
         mRequestQueue = Volley.newRequestQueue(this);
 
-        JsonArrayRequest jr = new JsonArrayRequest(JSON_URL,
+        JsonArrayRequest jr = new JsonArrayRequest(NOTICE_LIST_URL,
             new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
@@ -76,7 +91,7 @@ public class NoticeListVolleyActivity extends BaseActivity {
                 NoticeModel nm = new NoticeModel();
                 nm.setTitle(item.optString("title"));
                 // nm.setDescription(item.optString("title"));
-                nm.setLink(item.optString("id"));
+                nm.setId(item.optString("id"));
                 nm.setPubDate(item.optString("date"));
                 arrNotices.add(nm);
             }
@@ -86,26 +101,17 @@ public class NoticeListVolleyActivity extends BaseActivity {
     }
 
     class NoticeModel {
-        private int id;
+        private String id;
         private String title;
-        private String link;
         private String description;
         private String pubDate;
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
 
         void setTitle(String title) {
             this.title = title;
         }
 
-        void setLink(String link) {
-            this.link = link;
+        void setId(String id) {
+            this.id = id;
         }
 
         void setDescription(String description) {
@@ -116,8 +122,8 @@ public class NoticeListVolleyActivity extends BaseActivity {
             this.pubDate = pubDate;
         }
 
-        String getLink() {
-            return link;
+        String getId() {
+            return id;
         }
 
         String getDescription() {
