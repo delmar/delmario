@@ -30,7 +30,7 @@ public class NoticeListVolleyActivity extends BaseActivity {
 
     public static final String DELMAR_API_URL = "http://www.delmarcargo.com/api";
     public static final String NOTICE_LIST_URL = DELMAR_API_URL + "/notices/list.json";
-    public static final String NOTICE_HTML_URL = "/notices/";
+    public static final String NOTICE_HTML_URL = DELMAR_API_URL + "/notices/";
 
     private String TAG = this.getClass().getSimpleName();
     private ListView lstView;
@@ -152,7 +152,6 @@ public class NoticeListVolleyActivity extends BaseActivity {
         public Object getItem(int i) {
             return arrNotices.get(i);
         }
-
         @Override
         public long getItemId(int i) {
             return 0;
