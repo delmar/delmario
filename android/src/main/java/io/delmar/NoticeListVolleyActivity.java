@@ -1,8 +1,12 @@
 package io.delmar;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -22,6 +27,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import io.delmar.util.LogUtils;
 
 /**
  * Created by jinw on 04/10/13.
@@ -43,6 +50,15 @@ public class NoticeListVolleyActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
+
+        final ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        if (!isNetworkAvailable()) {
+            Toast.makeText(this, R.string.no_network_connection, Toast.LENGTH_SHORT).show();
+            LogUtils.LOGD(TAG, "network is not available");
+        }
+
         lf = LayoutInflater.from(this);
 
         arrNotices = new ArrayList<NoticeModel>();
@@ -184,5 +200,12 @@ public class NoticeListVolleyActivity extends BaseActivity {
             TextView tvDate;
         }
 
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

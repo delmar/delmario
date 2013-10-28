@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -59,6 +60,8 @@ public class LocationListVolleyActivity extends ActionBarActivity implements Act
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
 
         // Set up the dropdown list navigation in the action bar.
         actionBar.setListNavigationCallbacks(
@@ -142,10 +145,13 @@ public class LocationListVolleyActivity extends ActionBarActivity implements Act
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+/*
         switch (item.getItemId()) {
-            case R.id.action_settings:
+            case android.R.id.home:
+                finish();
                 return true;
         }
+*/
         return super.onOptionsItemSelected(item);
     }
 
@@ -190,6 +196,7 @@ public class LocationListVolleyActivity extends ActionBarActivity implements Act
             View rootView = inflater.inflate(R.layout.fragment_location_list, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
+            Toast.makeText(getActivity(), R.string.no_network_connection, Toast.LENGTH_SHORT).show();
             return rootView;
         }
     }

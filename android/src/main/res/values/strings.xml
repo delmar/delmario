@@ -47,5 +47,6 @@
     <string name="title_section1">offices</string>
     <string name="title_section2">agents</string>
     <string name="title_section3">Section 3</string>
+    <string name="no_network_connection">No Network Connection!</string>
 
 </resources>

@@ -9,6 +9,7 @@
         android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -42,6 +43,9 @@
         <activity
             android:name="io.delmar.NoticeListVolleyActivity"
             android:label="@string/title_activity_news" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
         <activity
             android:name="io.delmar.ItemListActivity"
@@ -68,6 +72,9 @@
         <activity
             android:name="io.delmar.LocationListVolleyActivity"
             android:label="@string/title_activity_location_list_volley" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
     </application>
 
