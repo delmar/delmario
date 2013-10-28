@@ -43,4 +43,9 @@
     <string name="title_item_list">Items</string>
     <string name="title_item_detail">Item Detail</string>
     <string name="location_authority">io.delmar.provider.location</string>
+    <string name="title_activity_location_list_volley">Location</string>
+    <string name="title_section1">offices</string>
+    <string name="title_section2">agents</string>
+    <string name="title_section3">Section 3</string>
+
 </resources>

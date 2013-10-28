@@ -1,4 +1,4 @@
-include ':spring-rest-api'
+// include ':spring-rest-api'
 include ':android'
 // include ':webview'
 // include ':abs'
