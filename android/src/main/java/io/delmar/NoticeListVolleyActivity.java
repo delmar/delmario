@@ -54,10 +54,12 @@ public class NoticeListVolleyActivity extends BaseActivity {
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+/*
         if (!isNetworkAvailable()) {
             Toast.makeText(this, R.string.no_network_connection, Toast.LENGTH_SHORT).show();
             LogUtils.LOGD(TAG, "network is not available");
         }
+*/
 
         lf = LayoutInflater.from(this);
 

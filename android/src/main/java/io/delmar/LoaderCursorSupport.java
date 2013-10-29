@@ -1,5 +1,7 @@
 package io.delmar;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
@@ -11,28 +13,25 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.SearchViewCompat;
-import android.support.v4.widget.SearchViewCompat.OnQueryTextListenerCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 /**
  * Demonstration of the use of a CursorLoader to load and display contacts
  * data in a fragment.
  */
-public class LoaderCursorSupport extends ActionBarActivity {
+public class LoaderCursorSupport extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +59,8 @@ public class LoaderCursorSupport extends ActionBarActivity {
         // Intent for starting the IntentService that populates location ContentProvider.
         // private Intent mServiceIntent;
 
-        @Override public void onActivityCreated(Bundle savedInstanceState) {
+        @Override
+        public void onActivityCreated(Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
 
             // Give some text to display if there is no data.  In a real
@@ -85,15 +85,25 @@ public class LoaderCursorSupport extends ActionBarActivity {
             getLoaderManager().initLoader(0, null, this);
         }
 
-        @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        @Override
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+            inflater.inflate(R.menu.location_loader, menu);
             // Place an action bar item for searching.
-            MenuItem item = menu.add("Search");
+            // MenuItem item = menu.add("Search");
+/*
             item.setIcon(R.drawable.ic_action_search);
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             View searchView = SearchViewCompat.newSearchView(getActivity());
+*/
+            // Get the SearchView and set the searchable configuration
+            SearchManager searchManager = (SearchManager) this.getActivity().getSystemService(Context.SEARCH_SERVICE);
+            SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+            // Assumes current activity is the searchable activity
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getActivity().getComponentName()));
+
             if (searchView != null) {
-                SearchViewCompat.setOnQueryTextListener(searchView,
-                        new OnQueryTextListenerCompat() {
+                searchView.setOnQueryTextListener(
+                        new SearchView.OnQueryTextListener() {
                             @Override
                             public boolean onQueryTextChange(String newText) {
                                 // Called when the action bar search text has changed.  Update
@@ -112,9 +122,14 @@ public class LoaderCursorSupport extends ActionBarActivity {
                                 getLoaderManager().restartLoader(0, null, CursorLoaderListFragment.this);
                                 return true;
                             }
+
+                            @Override public boolean onQueryTextSubmit(String s) {
+                                return false;
+                            }
                         });
-                item.setActionView(searchView);
+                // item.setActionView(searchView);
             }
+            // super.onCreateOptionsMenu(menu, inflater);
         }
 
         @Override public void onListItemClick(ListView l, View v, int position, long id) {

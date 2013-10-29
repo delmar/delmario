@@ -130,6 +130,10 @@ public class MainActivity extends ActionBarActivity {
                 Intent locationList = new Intent(this, LocationListVolleyActivity.class);
                 startActivity(locationList);
                 return true;
+            case R.id.action_location_loader:
+                Intent locationLoader = new Intent(this, FragmentTabPager.class);
+                startActivity(locationLoader);
+                return true;
             case R.id.action_facebook:
                 Intent facebook = new Intent(this, FacebookActivity.class);
                 startActivity(facebook);

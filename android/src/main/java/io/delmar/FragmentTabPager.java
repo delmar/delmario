@@ -27,8 +27,8 @@ public class FragmentTabPager extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         // setTheme(SampleList.THEME); //Used for theme switching in samples
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.fragment_tabs_pager);
+
         mTabHost = (TabHost)findViewById(android.R.id.tabhost);
         mTabHost.setup();
 

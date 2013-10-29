@@ -47,6 +47,9 @@
     <string name="title_section1">offices</string>
     <string name="title_section2">agents</string>
     <string name="title_section3">Section 3</string>
+    <string name="title_search">Search</string>
     <string name="no_network_connection">No Network Connection!</string>
-
+    <!-- searchable -->
+    <string name="app_label">Search</string>
+    <string name="search_hint">Search Hint</string>
 </resources>
