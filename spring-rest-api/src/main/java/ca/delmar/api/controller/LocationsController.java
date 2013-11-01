@@ -59,7 +59,7 @@ public class LocationsController {
         return "locations/maps";
     }
 
-    // The following are JDBC template specific
+    // The followings are not real controller related.
     public List<Location> findAllLocations() {
         return jdbcTemplate.query(SQL_FIND_ALL_LOCATIONS, new LocationMapper());
     }
@@ -73,7 +73,7 @@ public class LocationsController {
     }
 
     private static class LocationMapper implements ParameterizedRowMapper<Location> {
-        public Location mapRow(ResultSet rs, int rowNumm) throws SQLException {
+        public Location mapRow(ResultSet rs, int rowNum) throws SQLException {
             Location location = new Location();
             location.setName(rs.getString("name"));
             location.setAddress1(rs.getString("address1"));
