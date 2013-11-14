@@ -31,6 +31,7 @@
     <string name="refresh">Refresh</string>
     <string name="action_news">News</string>
     <string name="action_location">Location</string>
+    <string name="action_pars">PARS</string>
     <string name="title_activity_location">Location</string>
     <string name="title_activity_news">News</string>
     <string name="action_facebook">facebook</string>
@@ -52,4 +53,8 @@
     <!-- searchable -->
     <string name="app_label">Search</string>
     <string name="search_hint">Search Hint</string>
+    <string name="pars_result_hint">Search result will be shown below.</string>
+    <string name="server_error">Server Error</string>
+    <string name="json_error">JSON Error</string>
+    <string name="pars_not_found">PARS Not Found!</string>
 </resources>

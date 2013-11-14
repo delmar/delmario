@@ -100,6 +100,7 @@ public class LoaderCursorSupport extends FragmentActivity {
             SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
             // Assumes current activity is the searchable activity
             searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getActivity().getComponentName()));
+            searchView.setSubmitButtonEnabled(false);
 
             if (searchView != null) {
                 searchView.setOnQueryTextListener(
@@ -109,9 +110,11 @@ public class LoaderCursorSupport extends FragmentActivity {
                                 // Called when the action bar search text has changed.  Update
                                 // the search filter, and restart the loader to do a new query
                                 // with this filter.
-                                String newFilter = !TextUtils.isEmpty(newText) ? newText : null;
+                                // String newFilter = !TextUtils.isEmpty(newText) ? newText : null;
+                                mCurFilter = !TextUtils.isEmpty(newText) ? newText : null;
                                 // Don't do anything if the filter hasn't actually changed.
                                 // Prevents restarting the loader when restoring state.
+/*
                                 if (mCurFilter == null && newFilter == null) {
                                     return true;
                                 }
@@ -119,17 +122,19 @@ public class LoaderCursorSupport extends FragmentActivity {
                                     return true;
                                 }
                                 mCurFilter = newFilter;
+*/
                                 getLoaderManager().restartLoader(0, null, CursorLoaderListFragment.this);
                                 return true;
                             }
 
-                            @Override public boolean onQueryTextSubmit(String s) {
-                                return false;
+                            @Override
+                            public boolean onQueryTextSubmit(String s) {
+                                mCurFilter = !TextUtils.isEmpty(s) ? s : null;
+                                getLoaderManager().restartLoader(0, null, CursorLoaderListFragment.this);
+                                return true;
                             }
                         });
-                // item.setActionView(searchView);
             }
-            // super.onCreateOptionsMenu(menu, inflater);
         }
 
         @Override public void onListItemClick(ListView l, View v, int position, long id) {
@@ -202,6 +207,10 @@ public class LoaderCursorSupport extends FragmentActivity {
             // longer using it.
             mAdapter.swapCursor(null);
         }
+    }
+
+    private void showResults() {
+
     }
 
     public static class LocationDetailsActivity extends FragmentActivity {

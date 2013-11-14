@@ -25,9 +25,9 @@
         android:orderInCategory="15"
         delmario:showAsAction="never"/>
     <item
-        android:id="@+id/action_location_loader"
+        android:id="@+id/action_pars"
         android:icon="@drawable/ic_action_search"
-        android:title="@string/action_location"
+        android:title="@string/action_pars"
         android:orderInCategory="15"
         delmario:showAsAction="never"/>
     <item
