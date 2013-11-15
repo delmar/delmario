@@ -129,7 +129,7 @@ public class MainActivity extends ActionBarActivity {
             int imageId = getResources().getIdentifier(planet.toLowerCase(Locale.getDefault()),
                     "drawable", getActivity().getPackageName());
             ((ImageView) rootView.findViewById(R.id.image)).setImageResource(imageId);
-            getActivity().setTitle(planet);
+            // getActivity().setTitle(planet);
             return rootView;
         }
     }

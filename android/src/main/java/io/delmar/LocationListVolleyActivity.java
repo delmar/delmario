@@ -222,15 +222,15 @@ public class LocationListVolleyActivity extends ActionBarActivity implements Act
         try {
             for (int i = 0; i < items.length(); i++) {
                 JSONObject item = items.getJSONObject(i);
-                Location address = new Location();
-                address.setName(item.optString("name"));
-                address.setCity(item.optString("city"));
-                address.setAddress1(item.optString("address1"));
-                address.setAddress1(item.optString("address2"));
-                address.setCountry(item.optString("country"));
-                address.setZipCode(item.optString("zipCode"));
-                address.setProvState(item.optString("provState"));
-                locations.add(address);
+                Location location = new Location();
+                location.setName(item.optString("name"));
+                location.setAddress1(item.optString("address1"));
+                location.setAddress2(item.isNull("address2") ? null : item.optString("address2"));
+                location.setCity(item.optString("city"));
+                location.setProvState(item.isNull("provState") ? null : item.optString("provState"));
+                location.setZipCode(item.isNull("zipCode") ? null : item.optString("zipCode"));
+                location.setCountry(item.optString("country"));
+                locations.add(location);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -332,26 +332,28 @@ public class LocationListVolleyActivity extends ActionBarActivity implements Act
                 viewHolder = (ViewHolder) view.getTag();
             }
 
-            Location address = locations.get(i);
+            Location location = locations.get(i);
             StringBuilder sb = new StringBuilder();
-            sb.append(address.getName()).append("\n");
-            if (address.getAddress1() != null) {
-                sb.append(address.getAddress1());
-            }
-            if (address.getAddress2() != null) {
-                sb.append(address.getAddress2());
-            }
+            sb.append(location.getName());
             sb.append("\n");
-            if (address.getCity() != null) {
-                sb.append(address.getCity());
+            if (location.getAddress1() != null) {
+                sb.append(location.getAddress1());
+                sb.append("\n");
             }
-            if (address.getProvState() != null) {
-                sb.append(", ").append(address.getProvState());
+            if (location.getAddress2() != null) {
+                sb.append(location.getAddress2());
+                sb.append("\n");
             }
-            if (address.getZipCode() != null) {
-                sb.append(", ").append(address.getZipCode());
+            if (location.getCity() != null) {
+                sb.append(location.getCity()).append(", ");
             }
-            sb.append(", ").append(address.getCountry());
+            if (location.getProvState() != null) {
+                sb.append(location.getProvState()).append(", ");
+            }
+            if (location.getZipCode() != null) {
+                sb.append(location.getZipCode()).append(", ");
+            }
+            sb.append(location.getCountry());
             viewHolder.tv.setText(sb.toString());
             return view;
         }
