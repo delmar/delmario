@@ -91,18 +91,18 @@ public class ParsVolleyActivity extends BaseActivity {
         String checkDigit = root.getString("checkDigit");
         String portNumber = root.getString("portNumber");
         String ediSequence = root.getString("ediSequence");
-        String releaseDate = root.getString("releaseDate");
+        String releasedDate = root.getString("releasedDate");
 
         TextView tv = (TextView) findViewById(R.id.parsResultView);
 
         StringBuilder sb = new StringBuilder();
 
-        if (fileNumber.isEmpty()) {
+        if (fileNumber == null) {
             sb.append(R.string.pars_not_found);
         } else {
             sb.append("FileNumber: ").append(fileNumber).append("\n");
             sb.append("Status: ").append(status).append("\n");
-            sb.append("Release Date: ").append(releaseDate).append("\n");
+            sb.append("Released Date: ").append(releasedDate).append("\n");
             sb.append("Account Security Number: ").append(accountSecurityNumber).append("\n");
             sb.append("Check Digit: ").append(checkDigit).append("\n");
             sb.append("Port Number: ").append(portNumber).append("\n");
@@ -120,7 +120,7 @@ public class ParsVolleyActivity extends BaseActivity {
         private String portNumber;
         private String ediSequence;
         private String status;
-        private String releaseDate;
+        private String releasedDate;
 
         public String getFileNumber() {
             return fileNumber;
@@ -178,12 +178,12 @@ public class ParsVolleyActivity extends BaseActivity {
             this.status = status;
         }
 
-        public String getReleaseDate() {
-            return releaseDate;
+        public String getReleasedDate() {
+            return releasedDate;
         }
 
-        public void setReleaseDate(String releaseDate) {
-            this.releaseDate = releaseDate;
+        public void setReleasedDate(String releasedDate) {
+            this.releasedDate = releasedDate;
         }
     }
 
