@@ -5,11 +5,8 @@ import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,7 +40,10 @@ public class LocationListVolleyActivity extends ActionBarActivity implements Act
     private String TAG = this.getClass().getSimpleName();
 
     public static final String DELMAR_API_URL = "http://www.delmarcargo.com/api";
-    public static final String LOCATION_LIST_URL = DELMAR_API_URL + "/locations/offices/list.json";
+    public static final String OFFICE_LIST_URL = DELMAR_API_URL + "/locations/offices/list.json";
+    public static final String AGENT_LIST_URL = DELMAR_API_URL + "/locations/agents/list.json";
+    public static final String AGENT_AIR_LIST_URL = DELMAR_API_URL + "/locations/agents/air/list.json";
+    public static final String AGENT_OCEAN_LIST_URL = DELMAR_API_URL + "/locations/agents/ocean/list.json";
 
     private ListView mListView;
     private RequestQueue mRequestQueue;
@@ -70,13 +70,16 @@ public class LocationListVolleyActivity extends ActionBarActivity implements Act
                         actionBar.getThemedContext(),
                         android.R.layout.simple_list_item_1,
                         android.R.id.text1,
-                        new String[] {
+                        new String[]{
                                 getString(R.string.title_section1),
                                 getString(R.string.title_section2),
                                 getString(R.string.title_section3),
                         }),
                 this);
 
+    }
+
+    private void showLocationList(String url) {
         mLayoutInflater = LayoutInflater.from(this);
         locations = new ArrayList<Location>();
         mVolleyAdapter = new VolleyAdapter();
@@ -86,14 +89,14 @@ public class LocationListVolleyActivity extends ActionBarActivity implements Act
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Location loc = (Location) mVolleyAdapter.getItem(position);
-                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                Intent intent = new Intent(Intent.ACTION_VIEW,
                         Uri.parse("https://maps.google.com/maps?q=" + loc.getAddress1() + "+" + loc.getCity()));
                 startActivity(intent);
             }
         });
         mRequestQueue = Volley.newRequestQueue(this);
 
-        JsonArrayRequest jr = new JsonArrayRequest(LOCATION_LIST_URL,
+        JsonArrayRequest jr = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
@@ -112,7 +115,6 @@ public class LocationListVolleyActivity extends ActionBarActivity implements Act
 
         mRequestQueue.add(jr);
         mRequestQueue.start();
-
     }
 
     @Override
@@ -134,7 +136,7 @@ public class LocationListVolleyActivity extends ActionBarActivity implements Act
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.location_list_volley, menu);
         return true;
@@ -159,9 +161,20 @@ public class LocationListVolleyActivity extends ActionBarActivity implements Act
     public boolean onNavigationItemSelected(int position, long id) {
         // When the given dropdown item is selected, show its contents in the
         // container view.
+/*
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
                 .commit();
+*/
+        if (position == 0) {
+            showLocationList(OFFICE_LIST_URL);
+        } else if (position == 1) {
+            showLocationList(AGENT_AIR_LIST_URL);
+        } else if (position == 2) {
+            showLocationList(AGENT_OCEAN_LIST_URL);
+        } else {
+            Toast.makeText(getApplicationContext(), R.string.not_valid, Toast.LENGTH_SHORT).show();
+        }
         return true;
     }
 
@@ -192,26 +205,32 @@ public class LocationListVolleyActivity extends ActionBarActivity implements Act
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+                                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_location_list, container, false);
+/*
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
             Toast.makeText(getActivity(), R.string.no_network_connection, Toast.LENGTH_SHORT).show();
+*/
+
             return rootView;
         }
+
     }
 
     private void parseJSON(JSONArray items) {
         try {
-            // JSONObject value = json.getJSONObject("value");
-            // JSONArray items = value.getJSONArray("items");
             for (int i = 0; i < items.length(); i++) {
                 JSONObject item = items.getJSONObject(i);
-                Location nm = new Location();
-                nm.setName(item.optString("name"));
-                nm.setCity(item.optString("city"));
-                nm.setAddress1(item.optString("address1"));
-                locations.add(nm);
+                Location address = new Location();
+                address.setName(item.optString("name"));
+                address.setCity(item.optString("city"));
+                address.setAddress1(item.optString("address1"));
+                address.setAddress1(item.optString("address2"));
+                address.setCountry(item.optString("country"));
+                address.setZipCode(item.optString("zipCode"));
+                address.setProvState(item.optString("provState"));
+                locations.add(address);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -222,6 +241,10 @@ public class LocationListVolleyActivity extends ActionBarActivity implements Act
         String name;
         String city;
         String address1;
+        String address2;
+        String country;
+        String zipCode;
+        String provState;
 
         public String getName() {
             return name;
@@ -246,6 +269,38 @@ public class LocationListVolleyActivity extends ActionBarActivity implements Act
         public void setAddress1(String address1) {
             this.address1 = address1;
         }
+
+        public String getAddress2() {
+            return address2;
+        }
+
+        public void setAddress2(String address2) {
+            this.address2 = address2;
+        }
+
+        public String getCountry() {
+            return country;
+        }
+
+        public void setCountry(String country) {
+            this.country = country;
+        }
+
+        public String getZipCode() {
+            return zipCode;
+        }
+
+        public void setZipCode(String zipCode) {
+            this.zipCode = zipCode;
+        }
+
+        public String getProvState() {
+            return provState;
+        }
+
+        public void setProvState(String provState) {
+            this.provState = provState;
+        }
     }
 
     class VolleyAdapter extends BaseAdapter {
@@ -259,6 +314,7 @@ public class LocationListVolleyActivity extends ActionBarActivity implements Act
         public Object getItem(int i) {
             return locations.get(i);
         }
+
         @Override
         public long getItemId(int i) {
             return 0;
@@ -266,26 +322,44 @@ public class LocationListVolleyActivity extends ActionBarActivity implements Act
 
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
-            ViewHolder vh;
+            ViewHolder viewHolder;
             if (view == null) {
-                vh = new ViewHolder();
+                viewHolder = new ViewHolder();
                 view = mLayoutInflater.inflate(R.layout.fragment_location_list, null);
-                vh.tvName = (TextView) view.findViewById(R.id.section_label);
-                view.setTag(vh);
+                viewHolder.tv = (TextView) view.findViewById(R.id.section_label);
+                view.setTag(viewHolder);
             } else {
-                vh = (ViewHolder) view.getTag();
+                viewHolder = (ViewHolder) view.getTag();
             }
 
-            Location nm = locations.get(i);
-            vh.tvName.setText(nm.getName());
+            Location address = locations.get(i);
+            StringBuilder sb = new StringBuilder();
+            sb.append(address.getName()).append("\n");
+            if (address.getAddress1() != null) {
+                sb.append(address.getAddress1());
+            }
+            if (address.getAddress2() != null) {
+                sb.append(address.getAddress2());
+            }
+            sb.append("\n");
+            if (address.getCity() != null) {
+                sb.append(address.getCity());
+            }
+            if (address.getProvState() != null) {
+                sb.append(", ").append(address.getProvState());
+            }
+            if (address.getZipCode() != null) {
+                sb.append(", ").append(address.getZipCode());
+            }
+            sb.append(", ").append(address.getCountry());
+            viewHolder.tv.setText(sb.toString());
             return view;
         }
 
         class ViewHolder {
-            TextView tvName;
+            TextView tv;
         }
 
     }
-
 
 }

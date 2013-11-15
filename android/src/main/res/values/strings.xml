@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Delmar IO</string>
+    <string name="app_name">Delmar</string>
 
     <string-array name="planets_array">
         <item>Mercury</item>
@@ -46,10 +46,11 @@
     <string name="location_authority">io.delmar.provider.location</string>
     <string name="title_activity_location_list_volley">Location</string>
     <string name="title_section1">offices</string>
-    <string name="title_section2">agents</string>
-    <string name="title_section3">Section 3</string>
+    <string name="title_section2">agents(air)</string>
+    <string name="title_section3">agents(ocean)</string>
     <string name="title_search">Search</string>
     <string name="no_network_connection">No Network Connection!</string>
+    <string name="not_valid">Not Valid!</string>
     <!-- searchable -->
     <string name="app_label">Search</string>
     <string name="search_hint">Search Hint</string>

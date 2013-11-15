@@ -1,5 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:delmario="http://schemas.android.com/apk/res-auto">
+<!--
     <item
         android:id="@+id/action_websearch"
         android:icon="@drawable/ic_action_search"
@@ -12,6 +13,7 @@
         android:title="@string/refresh"
         android:orderInCategory="5"
         delmario:showAsAction="ifRoom"/>
+-->
     <item
         android:id="@+id/action_news"
         android:icon="@drawable/ic_action_help"
@@ -31,21 +33,9 @@
         android:orderInCategory="15"
         delmario:showAsAction="never"/>
     <item
-        android:id="@+id/action_settings"
-        android:icon="@drawable/ic_action_settings"
-        android:title="@string/action_settings"
-        android:orderInCategory="20"
-        delmario:showAsAction="never"/>
-    <item
         android:id="@+id/action_about"
         android:icon="@drawable/ic_action_about"
         android:title="@string/action_about"
         android:orderInCategory="30"
-        delmario:showAsAction="never"/>
-    <item
-        android:id="@+id/action_facebook"
-        android:icon="@drawable/icon_social_facebook"
-        android:title="@string/action_facebook"
-        android:orderInCategory="40"
         delmario:showAsAction="never"/>
 </menu>

@@ -54,6 +54,26 @@ public class LocationsController {
         return findAllAgentLocations();
     }
 
+/*
+    @RequestMapping("/agents/list")
+    @ResponseBody
+    public List<Location> getBothAgentList() {
+        return findBothAgentLocations();
+    }
+*/
+
+    @RequestMapping("/agents/air/list")
+    @ResponseBody
+    public List<Location> getAirAgentList() {
+        return findAirAgentLocations();
+    }
+
+    @RequestMapping("/agents/ocean/list")
+    @ResponseBody
+    public List<Location> getOceanAgentList() {
+        return findOceanAgentLocations();
+    }
+
     @RequestMapping("/maps")
     public String maps() {
         return "locations/maps";
@@ -70,6 +90,14 @@ public class LocationsController {
 
     public List<Location> findAllAgentLocations() {
         return jdbcTemplate.query(SQL_FIND_AGENT_LOCATIONS, new LocationMapper());
+    }
+
+    public List<Location> findAirAgentLocations() {
+        return jdbcTemplate.query(SQL_FIND_AIR_AGENT_LOCATIONS, new LocationMapper());
+    }
+
+    public List<Location> findOceanAgentLocations() {
+        return jdbcTemplate.query(SQL_FIND_OCEAN_AGENT_LOCATIONS, new LocationMapper());
     }
 
     private static class LocationMapper implements ParameterizedRowMapper<Location> {
@@ -93,5 +121,7 @@ public class LocationsController {
     public static final String SQL_FIND_ALL_LOCATIONS = "SELECT * FROM OFFICE_AGENT_LOCATION";
     public static final String SQL_FIND_OFFICE_LOCATIONS = "SELECT * FROM OFFICE_AGENT_LOCATION WHERE LOCATIONTYPE = 'OFFICE'";
     public static final String SQL_FIND_AGENT_LOCATIONS = "SELECT * FROM OFFICE_AGENT_LOCATION WHERE LOCATIONTYPE = 'AGENT'";
+    public static final String SQL_FIND_AIR_AGENT_LOCATIONS = "SELECT * FROM OFFICE_AGENT_LOCATION WHERE LOCATIONTYPE = 'AGENT' AND SERVICE = 2";
+    public static final String SQL_FIND_OCEAN_AGENT_LOCATIONS = "SELECT * FROM OFFICE_AGENT_LOCATION WHERE LOCATIONTYPE = 'AGENT' AND SERVICE = 3";
 
 }
