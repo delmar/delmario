@@ -13,7 +13,7 @@ public class Pars implements Serializable {
     private String portNumber;
     private int ediSequence;
     private String status;
-    private Date releaseDate;
+    private Date releasedDate;
 
     public int getEdiSequence() {
         return ediSequence;
@@ -80,7 +80,7 @@ public class Pars implements Serializable {
     }
 
     public String getStatus() {
-        if (getReleaseDate() != null) {
+        if (getReleasedDate() != null) {
             status = "Shipment Released.";
         } else {
             switch (ediSequence) {
@@ -110,11 +110,11 @@ public class Pars implements Serializable {
         this.status = status;
     }
 
-    public Date getReleaseDate() {
-        return releaseDate;
+    public Date getReleasedDate() {
+        return releasedDate;
     }
 
-    public void setReleaseDate(Date releaseDate) {
-        this.releaseDate = releaseDate;
+    public void setReleasedDate(Date releasedDate) {
+        this.releasedDate = releasedDate;
     }
 }

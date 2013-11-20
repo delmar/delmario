@@ -16,7 +16,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/pars")
-public class ShipmentQueryController {
+public class ParsQueryController {
 
     private JdbcTemplate jdbcTemplate;
 
@@ -51,7 +51,7 @@ public class ShipmentQueryController {
             pars.setPortNumber(rs.getString("port#"));
             pars.setCarrierCode(rs.getString("carriercode"));
             pars.setCargoControlNumber(rs.getString("cargocontrol"));
-            pars.setReleaseDate(rs.getDate("reldt"));
+            pars.setReleasedDate(rs.getDate("reldt"));
             return pars;
         }
     }
