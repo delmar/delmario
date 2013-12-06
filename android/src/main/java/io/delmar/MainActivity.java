@@ -62,7 +62,7 @@ public class MainActivity extends ActionBarActivity {
                 startActivity(locationList);
                 return true;
             case R.id.action_pars:
-                Intent pars = new Intent(this, ParsVolleyActivity.class);
+                Intent pars = new Intent(this, ShipmentStatusQueryActivity.class);
                 startActivity(pars);
                 return true;
             case R.id.action_about:
