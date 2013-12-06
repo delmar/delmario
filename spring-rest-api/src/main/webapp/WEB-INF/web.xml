@@ -14,7 +14,7 @@
         </init-param>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>ca.delmar.api.springconfig</param-value>
+            <param-value>ca.delmar.api.config</param-value>
         </init-param>
     </servlet>
 
